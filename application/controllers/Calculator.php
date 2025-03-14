@@ -23,7 +23,12 @@ class Calculator extends CI_Controller
 
 		// Verifica se os valores são numéricos
 		if (!is_numeric($num1) || !is_numeric($num2)) {
-			echo json_encode(['error' => 'Os valores inseridos devem ser numéricos']);
+			echo json_encode(['error' => 'Favor, inserir valores válidos.']);
+			return;
+		}
+		// Verifica se a operação selecionada é diferente de vazio
+		if ($operation == '') {
+			echo json_encode(['error' => 'Escolha uma operação matemática']);
 			return;
 		}
 		//Convertendo os valores para float, para garantir operações matemáticas seguras
