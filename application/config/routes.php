@@ -51,7 +51,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 // $route['default_controller'] = 'welcome';
 $route['default_controller'] = 'calculator';
-$route['calculator/calculate'] = 'calculator/calculate';
-$route['calculator_test'] = 'calculator_test';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/*$route['calculator/calculate'] = 'calculator/calculate';
+$route['calculator_test'] = 'calculator_test';*/
+
+// Rota para a calculadora
+$route['calculator'] = 'Calculator/index';
+$route['calculator/calculate'] = 'Calculator/calculate';
+
+// Rota para os testes
+$route['calculator_test'] = 'Calculator_test/index';

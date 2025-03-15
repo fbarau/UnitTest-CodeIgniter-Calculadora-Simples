@@ -3,15 +3,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Calculator extends CI_Controller
 {
-
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Calculator_model');
+		$this->load->model('Calculator_model'); // Carrega o model
 	}
 
 	public function index()
 	{
+		// Carrega a view da calculadora
 		$this->load->view('calculator_view');
 	}
 
@@ -23,20 +23,19 @@ class Calculator extends CI_Controller
 
 		// Verifica se os valores são numéricos
 		if (!is_numeric($num1) || !is_numeric($num2)) {
-			echo json_encode(['error' => 'Favor, inserir valores válidos.']);
+			echo json_encode(['error' => 'Os valores devem ser números.']);
 			return;
 		}
-		// Verifica se a operação selecionada é diferente de vazio
-		if ($operation == '') {
-			echo json_encode(['error' => 'Escolha uma operação matemática']);
-			return;
-		}
-		//Convertendo os valores para float, para garantir operações matemáticas seguras
+
 		$num1 = (float) $num1;
 		$num2 = (float) $num2;
 
 		$result = $this->Calculator_model->calculate($num1, $num2, $operation);
 
-		echo json_encode(['result' => $result]);
+		if ($result === null) {
+			echo json_encode(['error' => 'Operação inválida ou divisão por zero.']);
+		} else {
+			echo json_encode(['result' => $result]);
+		}
 	}
 }

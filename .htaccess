@@ -1,8 +1,31 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /calculadora/
 
+    # Se o projeto estiver dentro de uma pasta (exemplo: localhost/calculadora/)
+    # Mude a linha abaixo para RewriteBase /calculadora/
+    RewriteBase /
+
+    # Redireciona para HTTPS (opcional, remova se não quiser obrigar HTTPS)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Impede acesso direto a arquivos sensíveis
+    RewriteCond %{REQUEST_URI} ^(.*)/application/(.*)$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^(.*)/system/(.*)$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^(.*)/logs/(.*)$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^(.*)/cache/(.*)$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^(.*)/config/(.*)$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^(.*)/database/(.*)$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^(.*)/php_error/(.*)$ [NC]
+    RewriteRule ^(.*)$ /index.php?/$1 [L,R=403]
+
+    # Garante que arquivos e diretórios reais sejam acessados diretamente
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php/$1 [L]
+
+    # Redireciona todas as requisições para index.php
+    RewriteRule ^(.*)$ index.php?/$1 [L]
 </IfModule>
+
+# Protege contra listagem de diretórios
+Options -Indexes
